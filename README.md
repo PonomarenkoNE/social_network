@@ -70,3 +70,28 @@ Optionaly create superuser:
 python manage.py createsuperuser
 ```
 
+# Automated bot
+
+```sh
+python3 -m venv venv
+```
+
+Activate it:
+
+```sh
+source venv/bin/activate
+```
+
+Install requirements:
+
+```sh
+pip install -r requirements.txt
+```
+
+Edit config file `bot.env`.
+
+Run automated bot
+
+```sh
+python automated_bot.py
+```
