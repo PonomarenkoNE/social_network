@@ -54,7 +54,9 @@ class AnalyticsView(GenericAPIView):
         like_analytics = list(
             Like.objects.filter(creation_date__gte=date_from if date_from else datetime.min,
                                 creation_date__lte=date_to if date_to else datetime.max)
-            .annotate(date=TruncDate('creation_date'), count=Count('id'))
+            .annotate(date=TruncDate('creation_date'))
+            .values('date')
+            .annotate(count=Count('id'))
             .order_by('date')
             .values('date', 'count')
         )
