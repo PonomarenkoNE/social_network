@@ -13,11 +13,17 @@ from .permissions import IsOwnerOrSuperuser
 
 
 class PostListView(ListAPIView):
+    """
+        List all posts.
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
 
 class UsersPostsListView(ListAPIView):
+    """
+        List all posts that created specific user.
+    """
     serializer_class = PostSerializer
 
     def get_queryset(self):
@@ -27,21 +33,41 @@ class UsersPostsListView(ListAPIView):
 
 
 class PostCreateView(CreateAPIView):
+    """
+        Create new post.
+
+        Authorization required.
+    """
     permission_classes = (IsAuthenticated, )
     serializer_class = PostSerializer
 
 
 class PostDeleteView(DestroyAPIView):
+    """
+        Delete post.
+
+        Authorization required. Need to be creator of post or superuser.
+    """
     queryset = Post.objects.all()
     permission_classes = (IsOwnerOrSuperuser, )
 
 
 class LikeCreateView(CreateAPIView):
+    """
+        Add like to post.
+        If user already added like to this post, then it removing like and
+         returning status 204 and {"detail": "Like removed"}.
+
+        Authorization required.
+    """
     permission_classes = (IsAuthenticated, )
     serializer_class = LikeSerializer
 
 
 class AnalyticsView(GenericAPIView):
+    """
+        Analytics about number likes per day. If date_from or date_to not provided it would filter by datetime.min/max.
+    """
 
     def get(self, request):
         serializer = AnalyticsSerializer(data=request.query_params)
@@ -65,6 +91,9 @@ class AnalyticsView(GenericAPIView):
 
 
 class UserActivityView(GenericAPIView):
+    """
+        Provide activity info about user.
+    """
 
     def get(self, request, username):
         user = User.objects.filter(username=username).first()
